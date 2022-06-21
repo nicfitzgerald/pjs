@@ -2,6 +2,7 @@ package entry
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 
@@ -49,6 +50,19 @@ func OutputEntriesToPDF(entries []Entry) error {
 	if wcerr != nil {
 		return errors.Wrap(wcerr, errPandoc)
 	}
+	writeErr := writeToWriteCloser(output, wc)
+	if writeErr != nil {
+		return writeErr
+	}
+
+	err := pandoc.Run()
+	if err != nil {
+		return errors.Wrap(err, errCannotRunPandoc)
+	}
+	return nil
+}
+
+func writeToWriteCloser(output []byte, wc io.WriteCloser) error {
 	goerr := make(chan error)
 	done := make(chan bool)
 	go func() {
@@ -63,10 +77,6 @@ func OutputEntriesToPDF(entries []Entry) error {
 	}()
 	if err := <-goerr; err != nil {
 		return errors.Wrap(err, errCannotWriteToFilePandoc)
-	}
-	err := pandoc.Run()
-	if err != nil {
-		return errors.Wrap(err, errCannotRunPandoc)
 	}
 	return nil
 }
