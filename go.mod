@@ -3,11 +3,11 @@ module github.com/bashbunni/pjs
 go 1.20
 
 require (
+	github.com/adrg/xdg v0.4.0
 	github.com/charmbracelet/bubbles v0.14.0
 	github.com/charmbracelet/bubbletea v0.22.1
 	github.com/charmbracelet/glamour v0.5.0
 	github.com/charmbracelet/lipgloss v0.6.0
-	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/viper v1.15.0
 	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gorm v1.24.0
